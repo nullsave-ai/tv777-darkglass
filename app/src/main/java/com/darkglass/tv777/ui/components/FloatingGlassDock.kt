@@ -44,8 +44,8 @@ fun FloatingGlassDock(currentDestination: AppDestination, onNavigate: (AppDestin
             horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
             AppDestination.entries.forEach { dest ->
                 val selected = dest == currentDestination
-                val scale by animateFloatAsState(if (selected) 1.05f else 1f, spring(Spring.DampingRatioMediumBouncy), "scale")
-                val color by animateColorAsState(if (selected) TextWhite else TextMuted, tween(250), "color")
+                val scale by animateFloatAsState(if (selected) 1.05f else 1f, spring(Spring.DampingRatioMediumBouncy), label = "scale")
+                val color by animateColorAsState(if (selected) TextWhite else TextMuted, tween(250), label = "color")
                 Box(Modifier.weight(1f).scale(scale).clip(RoundedCornerShape(22.dp))
                     .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null) { onNavigate(dest) }
                     .padding(vertical = 4.dp), Alignment.Center) {

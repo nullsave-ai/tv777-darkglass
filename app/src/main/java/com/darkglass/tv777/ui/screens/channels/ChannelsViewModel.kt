@@ -32,8 +32,15 @@ class ChannelsViewModel(private val repo: ChannelRepository) : ViewModel() {
     private val status = MutableStateFlow<String?>(null)
 
     val uiState: StateFlow<ChannelsUiState> = combine(
-        repo.allChannelsFlow, query, category, grid, favOnly, refreshing, status
-    ) { all, q, cat, isGrid, fav, busy, msg ->
+        arrayOf(repo.allChannelsFlow, query, category, grid, favOnly, refreshing, status)
+    ) { a ->
+        val all = a[0] as List<Channel>
+        val q = a[1] as String
+        val cat = a[2] as ChannelCategory
+        val isGrid = a[3] as Boolean
+        val fav = a[4] as Boolean
+        val busy = a[5] as Boolean
+        val msg = a[6] as String?
         ChannelsUiState(
             all.filter { c ->
                 (q.isBlank() || c.name.contains(q, true) || c.arabicName.contains(q, true) || c.category.arabicName.contains(q, true)) &&

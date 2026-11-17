@@ -136,8 +136,8 @@ fun CompactChannelCard(channel: Channel, isSelected: Boolean, onClick: () -> Uni
 
 @Composable
 fun FavoriteGlassButton(isFavorite: Boolean, onToggle: () -> Unit, modifier: Modifier = Modifier) {
-    val scale by animateFloatAsState(if (isFavorite) 1.15f else 1f, spring(Spring.DampingRatioMediumBouncy), "fav_scale")
-    val tint by animateColorAsState(if (isFavorite) AccentGold else Color(0x70FFFFFF), "fav_color")
+    val scale by animateFloatAsState(if (isFavorite) 1.15f else 1f, spring(Spring.DampingRatioMediumBouncy), label = "fav_scale")
+    val tint by animateColorAsState(if (isFavorite) AccentGold else Color(0x70FFFFFF), label = "fav_color")
     Box(modifier.size(32.dp).scale(scale).clip(CircleShape).background(Color(0x30101622))
         .border(0.8.dp, Color.White.copy(alpha = 0.2f), CircleShape).clickable { onToggle() }, Alignment.Center) {
         AppIcon(if (isFavorite) Ic.STAR else Ic.STAR_BORDER, Modifier.size(18.dp), tint, 1.6.dp)

@@ -46,14 +46,14 @@ fun PlayerScreen(channel: Channel, viewModel: PlayerViewModel, onBackClick: () -
     }
 
     Box(modifier.fillMaxSize().background(Color.Black).clickable(interactionSource = interaction, indication = null) { viewModel.toggleControls() }) {
-        AndroidView(Modifier.fillMaxSize(), factory = { ctx ->
+        AndroidView(factory = { ctx ->
             PlayerView(ctx).apply {
                 player = viewModel.getPlayer()
                 useController = false
                 layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
                 resizeMode = resize
             }
-        }, update = { view ->
+        }, modifier = Modifier.fillMaxSize(), update = { view ->
             view.player = viewModel.getPlayer()
             view.resizeMode = resize
         })

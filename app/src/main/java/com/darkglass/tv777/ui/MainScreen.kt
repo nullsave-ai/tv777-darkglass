@@ -47,12 +47,12 @@ fun MainScreen(settings: SettingsManager, repo: ChannelRepository) {
     Tv777Theme(accent) {
         Box(Modifier.fillMaxSize().background(BackgroundVoid)) {
             if (active != null) {
-                PlayerScreen(active!!, player) { active = null }
+                PlayerScreen(active!!, player, { active = null })
             } else {
                 Crossfade(tab, animationSpec = tween(300), label = "tab") { dest ->
                     when (dest) {
-                        HOME -> HomeScreen(home) { active = it }
-                        CHANNELS -> ChannelsScreen(channels) { active = it }
+                        HOME -> HomeScreen(home, { active = it })
+                        CHANNELS -> ChannelsScreen(channels, { active = it })
                         SETTINGS -> SettingsScreen(prefs)
                     }
                 }

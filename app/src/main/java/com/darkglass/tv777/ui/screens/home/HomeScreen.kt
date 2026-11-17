@@ -41,6 +41,7 @@ import com.darkglass.tv777.ui.theme.TextMuted
 import com.darkglass.tv777.ui.theme.TextWhite
 import com.darkglass.tv777.ui.theme.darkGlass
 import com.darkglass.tv777.ui.theme.primaryColor
+import com.darkglass.tv777.ui.theme.secondaryColor
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel, onChannelClick: (Channel) -> Unit, modifier: Modifier = Modifier) {

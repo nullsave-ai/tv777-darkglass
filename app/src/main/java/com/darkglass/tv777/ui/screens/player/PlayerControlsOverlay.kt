@@ -129,7 +129,7 @@ fun PlayerControlsOverlay(
                             Text("قائمة القنوات السريعة", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = TextWhite, modifier = Modifier.padding(bottom = 8.dp))
                             LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(horizontal = 4.dp)) {
                                 items(state.allChannels, key = { it.id }) { c ->
-                                    CompactChannelCard(c, c.id == channel?.id) { onSelectChannel(c) }
+                                    CompactChannelCard(c, c.id == channel?.id, { onSelectChannel(c) })
                                 }
                             }
                         }
