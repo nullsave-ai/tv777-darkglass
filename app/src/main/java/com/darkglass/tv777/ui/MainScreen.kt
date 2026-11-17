@@ -36,7 +36,7 @@ import com.darkglass.tv777.ui.theme.Tv777Theme
 
 @Composable
 fun MainScreen(settings: SettingsManager, repo: ChannelRepository) {
-    val accent by settings.accentFlow.collectAsState(GlassAccent.NEON_BLUE)
+    val accent by settings.accentFlow.collectAsState(GlassAccent.SLATE)
     val context = LocalContext.current
     val home = remember { HomeViewModel(repo) }
     val channels = remember { ChannelsViewModel(repo) }

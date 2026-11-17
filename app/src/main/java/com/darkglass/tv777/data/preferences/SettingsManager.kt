@@ -27,7 +27,7 @@ class SettingsManager(private val context: Context) {
     private val m3uKey = stringPreferencesKey("custom_m3u_url")
 
     val accentFlow: Flow<GlassAccent> = context.dataStore.data.map { p ->
-        GlassAccent.fromName(p[accentKey] ?: GlassAccent.NEON_BLUE.name)
+        GlassAccent.fromName(p[accentKey] ?: GlassAccent.SLATE.name)
     }
 
     val playerConfigFlow: Flow<PlayerConfig> = context.dataStore.data.map { p ->

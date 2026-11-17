@@ -42,11 +42,12 @@ import androidx.compose.ui.unit.sp
 import com.darkglass.tv777.data.model.Channel
 import com.darkglass.tv777.data.model.ChannelCategory
 import com.darkglass.tv777.ui.components.AppIcon
-import com.darkglass.tv777.ui.components.DarkGlassAmbientCanvas
 import com.darkglass.tv777.ui.components.GlassHeader
 import com.darkglass.tv777.ui.components.Ic
 import com.darkglass.tv777.ui.components.StandardChannelCard
 import com.darkglass.tv777.ui.theme.AccentGold
+import com.darkglass.tv777.ui.theme.BackgroundSurface
+import com.darkglass.tv777.ui.theme.BackgroundElevated
 import com.darkglass.tv777.ui.theme.BackgroundDeep
 import com.darkglass.tv777.ui.theme.LocalGlassAccent
 import com.darkglass.tv777.ui.theme.TextMuted
@@ -60,7 +61,6 @@ fun ChannelsScreen(viewModel: ChannelsViewModel, onChannelClick: (Channel) -> Un
     val state by viewModel.uiState.collectAsState()
     val accent = LocalGlassAccent.current
     Box(modifier.fillMaxSize().background(BackgroundDeep)) {
-        DarkGlassAmbientCanvas(Modifier.fillMaxSize(), accent.primaryColor, accent.secondaryColor)
         Column(Modifier.fillMaxSize().padding(bottom = 90.dp)) {
             GlassHeader("دليل القنوات المباشرة", { viewModel.refreshChannels() }, Ic.REFRESH)
             AnimatedVisibility(state.statusMessage != null, enter = fadeIn(), exit = fadeOut()) {
@@ -74,7 +74,7 @@ fun ChannelsScreen(viewModel: ChannelsViewModel, onChannelClick: (Channel) -> Un
                 }
             }
             Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.weight(1f).height(48.dp).darkGlass(RoundedCornerShape(16.dp), androidx.compose.ui.graphics.Color(0x600F1728))
+                Box(Modifier.weight(1f).height(48.dp).darkGlass(RoundedCornerShape(16.dp), BackgroundSurface)
                     .padding(horizontal = 14.dp), Alignment.CenterStart) {
                     if (state.searchQuery.isEmpty()) Text("ابحث عن اسم القناة أو التصنيف…", fontSize = 13.sp, color = TextMuted)
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -88,12 +88,12 @@ fun ChannelsScreen(viewModel: ChannelsViewModel, onChannelClick: (Channel) -> Un
                 }
                 Spacer(Modifier.width(10.dp))
                 Box(Modifier.size(48.dp).darkGlass(RoundedCornerShape(16.dp),
-                    if (state.showFavoritesOnly) AccentGold.copy(alpha = 0.25f) else androidx.compose.ui.graphics.Color(0x500F1728),
+                    if (state.showFavoritesOnly) AccentGold.copy(alpha = 0.25f) else BackgroundSurface,
                     if (state.showFavoritesOnly) AccentGold else null).clickable { viewModel.toggleFavoritesFilter() }, Alignment.Center) {
                     AppIcon(Ic.STAR, Modifier.size(20.dp), if (state.showFavoritesOnly) AccentGold else TextMuted)
                 }
                 Spacer(Modifier.width(8.dp))
-                Box(Modifier.size(48.dp).darkGlass(RoundedCornerShape(16.dp), androidx.compose.ui.graphics.Color(0x500F1728))
+                Box(Modifier.size(48.dp).darkGlass(RoundedCornerShape(16.dp), BackgroundSurface)
                     .clickable { viewModel.toggleViewMode() }, Alignment.Center) {
                     AppIcon(if (state.isGridView) Ic.GRID else Ic.LIST, Modifier.size(20.dp), accent.primaryColor)
                 }
@@ -102,7 +102,7 @@ fun ChannelsScreen(viewModel: ChannelsViewModel, onChannelClick: (Channel) -> Un
                 items(ChannelCategory.entries, key = { it.id }) { cat ->
                     val active = cat == state.selectedCategory
                     Box(Modifier.clip(RoundedCornerShape(14.dp))
-                        .background(if (active) accent.primaryColor.copy(alpha = 0.35f) else androidx.compose.ui.graphics.Color(0x35111928))
+                        .background(if (active) accent.primaryColor.copy(alpha = 0.35f) else BackgroundElevated)
                         .border(1.dp, if (active) accent.primaryColor.copy(alpha = 0.8f) else androidx.compose.ui.graphics.Color.White.copy(alpha = 0.12f), RoundedCornerShape(14.dp))
                         .clickable { viewModel.selectCategory(cat) }.padding(horizontal = 12.dp, vertical = 7.dp), Alignment.Center) {
                         Text(cat.arabicName, fontSize = 12.sp, fontWeight = if (active) FontWeight.Bold else FontWeight.Normal, color = if (active) TextWhite else TextMuted)
@@ -115,7 +115,7 @@ fun ChannelsScreen(viewModel: ChannelsViewModel, onChannelClick: (Channel) -> Un
             }
             if (state.channels.isEmpty()) {
                 Box(Modifier.fillMaxSize().padding(32.dp), Alignment.Center) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.darkGlass(RoundedCornerShape(24.dp), androidx.compose.ui.graphics.Color(0x700C111C)).padding(28.dp)) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.darkGlass(RoundedCornerShape(24.dp), BackgroundSurface).padding(28.dp)) {
                         AppIcon(Ic.ANTENNA, Modifier.size(48.dp), accent.primaryColor, 2.dp)
                         Spacer(Modifier.height(12.dp))
                         Text("لم يتم العثور على أي قناة", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = TextWhite)

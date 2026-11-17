@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">777</string>
-    <string name="app_subtitle">Dark Glass Streaming</string>
+    <string name="app_subtitle">Live TV Streaming</string>
 
     <!-- Navigation -->
     <string name="nav_home">الرئيسية</string>
@@ -38,11 +38,11 @@
     <string name="player_quick_list">قائمة القنوات السريعة</string>
 
     <!-- Settings -->
-    <string name="settings_visual_theme">المظهر والإضاءة الزجاجية</string>
-    <string name="settings_accent_color">نغمة الإضاءة الزجاجية (Accent)</string>
-    <string name="settings_accent_blue">أزرق سماوي نيون</string>
-    <string name="settings_accent_purple">بنفسجي فوتوغرافي</string>
-    <string name="settings_accent_cyan">إنديغو كريستال</string>
+    <string name="settings_visual_theme">المظهر</string>
+    <string name="settings_accent_color">لون التمييز</string>
+    <string name="settings_accent_blue">جرافيت</string>
+    <string name="settings_accent_purple">أزرق هادئ</string>
+    <string name="settings_accent_cyan">رملي</string>
     <string name="settings_player_title">إعدادات مشغل البث</string>
     <string name="settings_buffer_mode">وضع التخزين المؤقت (Buffer)</string>
     <string name="settings_buffer_low">بث فائق السرعة (Low Latency)</string>
@@ -53,6 +53,6 @@
     <string name="settings_m3u_url">رابط قائمة البث (M3U / Stream Source)</string>
     <string name="settings_save_and_reload">حفظ وتحديث القائمة</string>
     <string name="settings_about_title">عن تطبيق 777</string>
-    <string name="settings_version">الإصدار 1.0.0 — Dark Glass Architecture</string>
+    <string name="settings_version">الإصدار 1.0.0</string>
     <string name="settings_tech_stack">Jetpack Compose • Media3 • Custom Canvas</string>
 </resources>

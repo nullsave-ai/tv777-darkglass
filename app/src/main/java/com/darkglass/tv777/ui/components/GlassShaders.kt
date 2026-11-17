@@ -14,11 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.darkglass.tv777.ui.theme.AccentLiveRed
-import com.darkglass.tv777.ui.theme.AccentNeonBlue
 
 @Composable
 fun LiveAudioWave(modifier: Modifier = Modifier, barCount: Int = 3, color: Color = AccentLiveRed, isPlaying: Boolean = true) {
@@ -33,17 +31,5 @@ fun LiveAudioWave(modifier: Modifier = Modifier, barCount: Int = 3, color: Color
             val height = hs[i % hs.size] * size.height
             drawRoundRect(color, Offset(i * bw * 2f, size.height - height), Size(bw, height), CornerRadius(bw / 2f, bw / 2f))
         }
-    }
-}
-
-@Composable
-fun DarkGlassAmbientCanvas(modifier: Modifier = Modifier, primaryAccent: Color = AccentNeonBlue, secondaryAccent: Color = Color(0xFF8A3FFC)) {
-    Canvas(modifier) {
-        drawCircle(Brush.radialGradient(listOf(primaryAccent.copy(alpha = 0.14f), primaryAccent.copy(alpha = 0.05f), Color.Transparent),
-            Offset(size.width * 0.85f, size.height * 0.15f), size.width * 0.65f))
-        drawCircle(Brush.radialGradient(listOf(secondaryAccent.copy(alpha = 0.1f), secondaryAccent.copy(alpha = 0.03f), Color.Transparent),
-            Offset(size.width * 0.12f, size.height * 0.55f), size.width * 0.6f))
-        drawCircle(Brush.radialGradient(listOf(primaryAccent.copy(alpha = 0.08f), Color.Transparent),
-            Offset(size.width * 0.5f, size.height * 0.95f), size.width * 0.5f))
     }
 }

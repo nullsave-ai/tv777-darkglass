@@ -44,6 +44,9 @@ import com.darkglass.tv777.ui.components.CompactChannelCard
 import com.darkglass.tv777.ui.components.Ic
 import com.darkglass.tv777.ui.components.LiveAudioWave
 import com.darkglass.tv777.ui.theme.AccentLiveRed
+import com.darkglass.tv777.ui.theme.BackgroundElevated
+import com.darkglass.tv777.ui.theme.GlassStrokeDefault
+import com.darkglass.tv777.ui.theme.BackgroundSurface
 import com.darkglass.tv777.ui.theme.LocalGlassAccent
 import com.darkglass.tv777.ui.theme.TextMuted
 import com.darkglass.tv777.ui.theme.TextWhite
@@ -70,7 +73,7 @@ fun PlayerControlsOverlay(
     val channel = state.currentChannel
     Box(modifier.fillMaxSize()) {
         if (state.isLoading) {
-            Box(Modifier.align(Alignment.Center).darkGlass(RoundedCornerShape(22.dp), Color(0xB0070A12)).padding(24.dp), Alignment.Center) {
+            Box(Modifier.align(Alignment.Center).darkGlass(RoundedCornerShape(22.dp), BackgroundSurface).padding(24.dp), Alignment.Center) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     CircularProgressIndicator(Modifier.size(44.dp), color = accent.primaryColor, strokeWidth = 3.dp)
                     Spacer(Modifier.height(14.dp))
@@ -79,7 +82,7 @@ fun PlayerControlsOverlay(
             }
         }
         if (state.errorMessage != null) {
-            Box(Modifier.align(Alignment.Center).padding(32.dp).darkGlass(RoundedCornerShape(24.dp), Color(0xD014070A), AccentLiveRed).padding(24.dp), Alignment.Center) {
+            Box(Modifier.align(Alignment.Center).padding(32.dp).darkGlass(RoundedCornerShape(24.dp), BackgroundSurface, AccentLiveRed).padding(24.dp), Alignment.Center) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     AppIcon(Ic.WARNING, Modifier.size(40.dp), AccentLiveRed, 2.4.dp)
                     Spacer(Modifier.height(10.dp))
@@ -88,7 +91,7 @@ fun PlayerControlsOverlay(
                     Text(state.errorMessage, fontSize = 12.sp, color = TextMuted, textAlign = TextAlign.Center)
                     Spacer(Modifier.height(16.dp))
                     Box(Modifier.clip(RoundedCornerShape(14.dp))
-                        .background(Brush.horizontalGradient(listOf(accent.primaryColor, accent.secondaryColor)))
+                        .background(accent.primaryColor)
                         .clickable { onRetry() }.padding(horizontal = 24.dp, vertical = 10.dp)) {
                         Text("إعادة المحاولة", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = TextWhite)
                     }
@@ -98,10 +101,10 @@ fun PlayerControlsOverlay(
         AnimatedVisibility(state.areControlsVisible, enter = fadeIn(), exit = fadeOut()) {
             Box(Modifier.fillMaxSize()) {
                 Box(Modifier.fillMaxWidth().align(Alignment.TopCenter)
-                    .background(Brush.verticalGradient(listOf(Color(0xEB06080C), Color(0x9006080C), Color.Transparent)))
+                    .background(BackgroundSurface)
                     .padding(horizontal = 20.dp, vertical = 18.dp)) {
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                        Box(Modifier.size(42.dp).darkGlass(CircleShape, Color(0x600C111C)).clickable { onBackClick() }, Alignment.Center) {
+                        Box(Modifier.size(42.dp).darkGlass(CircleShape, BackgroundElevated).clickable { onBackClick() }, Alignment.Center) {
                             AppIcon(Ic.CLOSE, Modifier.size(20.dp), TextWhite)
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -112,7 +115,7 @@ fun PlayerControlsOverlay(
                             }
                             Text("${channel?.category?.arabicName ?: "قناة"} • ${channel?.bitrate ?: "1080p"}", fontSize = 11.sp, color = TextMuted)
                         }
-                        Box(Modifier.clip(RoundedCornerShape(12.dp)).background(Color(0x400F1726))
+                        Box(Modifier.clip(RoundedCornerShape(12.dp)).background(BackgroundElevated)
                             .border(1.dp, Color.White.copy(alpha = 0.2f), RoundedCornerShape(12.dp))
                             .clickable { onCycleAspectRatio() }.padding(horizontal = 10.dp, vertical = 6.dp), Alignment.Center) {
                             Text(state.aspectRatio.name, fontSize = 11.sp, fontWeight = FontWeight.Bold, color = accent.primaryColor)
@@ -120,7 +123,7 @@ fun PlayerControlsOverlay(
                     }
                 }
                 Column(Modifier.fillMaxWidth().align(Alignment.BottomCenter)
-                    .background(Brush.verticalGradient(listOf(Color.Transparent, Color(0xB006080C), Color(0xF006080C))))
+                    .background(BackgroundSurface)
                     .padding(horizontal = 20.dp, vertical = 20.dp)) {
                     AnimatedVisibility(state.isQuickChannelsOpen,
                         enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
@@ -134,7 +137,7 @@ fun PlayerControlsOverlay(
                             }
                         }
                     }
-                    Box(Modifier.fillMaxWidth().darkGlass(RoundedCornerShape(26.dp), Color(0xC0090D18), accent.primaryColor, elevation = 16.dp)
+                    Box(Modifier.fillMaxWidth().darkGlass(RoundedCornerShape(26.dp), BackgroundSurface, accent.primaryColor, elevation = 16.dp)
                         .padding(horizontal = 16.dp, vertical = 12.dp)) {
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.width(110.dp)) {
@@ -144,24 +147,24 @@ fun PlayerControlsOverlay(
                                 Spacer(Modifier.width(6.dp))
                                 Slider(if (state.isMuted) 0f else state.volume, { onVolumeChange(it) },
                                     colors = SliderDefaults.colors(thumbColor = accent.primaryColor,
-                                        activeTrackColor = accent.primaryColor, inactiveTrackColor = Color(0x30FFFFFF)),
+                                        activeTrackColor = accent.primaryColor, inactiveTrackColor = GlassStrokeDefault),
                                     modifier = Modifier.weight(1f))
                             }
                             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                                Box(Modifier.size(38.dp).clip(CircleShape).background(Color(0x30FFFFFF)).clickable { onPrevChannel() }, Alignment.Center) {
+                                Box(Modifier.size(38.dp).clip(CircleShape).background(GlassStrokeDefault).clickable { onPrevChannel() }, Alignment.Center) {
                                     AppIcon(Ic.PREV, Modifier.size(20.dp), TextWhite)
                                 }
                                 Box(Modifier.size(54.dp).clip(CircleShape)
-                                    .background(Brush.linearGradient(listOf(accent.primaryColor, accent.secondaryColor)))
+                                    .background(accent.primaryColor)
                                     .border(1.2.dp, Color.White.copy(alpha = 0.5f), CircleShape).clickable { onTogglePlay() }, Alignment.Center) {
                                     AppIcon(if (state.isPlaying) Ic.PAUSE else Ic.PLAY, Modifier.size(24.dp), TextWhite)
                                 }
-                                Box(Modifier.size(38.dp).clip(CircleShape).background(Color(0x30FFFFFF)).clickable { onNextChannel() }, Alignment.Center) {
+                                Box(Modifier.size(38.dp).clip(CircleShape).background(GlassStrokeDefault).clickable { onNextChannel() }, Alignment.Center) {
                                     AppIcon(Ic.NEXT, Modifier.size(20.dp), TextWhite)
                                 }
                             }
                             Box(Modifier.clip(RoundedCornerShape(12.dp))
-                                .background(if (state.isQuickChannelsOpen) accent.primaryColor.copy(alpha = 0.35f) else Color(0x30FFFFFF))
+                                .background(if (state.isQuickChannelsOpen) accent.primaryColor.copy(alpha = 0.35f) else GlassStrokeDefault)
                                 .border(0.8.dp, if (state.isQuickChannelsOpen) accent.primaryColor else Color.White.copy(alpha = 0.2f), RoundedCornerShape(12.dp))
                                 .clickable { onToggleQuickChannels() }.padding(horizontal = 10.dp, vertical = 8.dp),
                                 Alignment.Center) {

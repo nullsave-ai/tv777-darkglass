@@ -13,12 +13,12 @@ enum class BufferStrategy(val title: String, val minBufferMs: Int, val maxBuffer
 }
 
 enum class GlassAccent(val displayName: String, val primaryHex: Long, val secondaryHex: Long) {
-    NEON_BLUE("أزرق نيون", 0xFF3D7EFE, 0xFF00E5FF),
-    DEEP_PURPLE("بنفسجي فوتوغرافي", 0xFF8A3FFC, 0xFFFF007A),
-    CYAN_INDIGO("إنديغو كريستال", 0xFF00E5FF, 0xFF7000FF);
+    GRAPHITE("جرافيت", 0xFF8B94A5, 0xFF5E6673),
+    SLATE("أزرق هادئ", 0xFF7C93C6, 0xFF9AAAC7),
+    SAND("رملي", 0xFFC0A277, 0xFF9C8767);
 
     companion object {
-        fun fromName(name: String) = entries.firstOrNull { it.name.equals(name, true) } ?: NEON_BLUE
+        fun fromName(name: String) = entries.firstOrNull { it.name.equals(name, true) } ?: SLATE
     }
 }
 

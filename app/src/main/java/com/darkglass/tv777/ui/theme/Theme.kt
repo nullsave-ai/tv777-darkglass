@@ -6,10 +6,10 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import com.darkglass.tv777.data.model.GlassAccent
 
-val LocalGlassAccent = staticCompositionLocalOf { GlassAccent.NEON_BLUE }
+val LocalGlassAccent = staticCompositionLocalOf { GlassAccent.SLATE }
 
 @Composable
-fun Tv777Theme(glassAccent: GlassAccent = GlassAccent.NEON_BLUE, content: @Composable () -> Unit) {
+fun Tv777Theme(glassAccent: GlassAccent = GlassAccent.SLATE, content: @Composable () -> Unit) {
     CompositionLocalProvider(LocalGlassAccent provides glassAccent) { content() }
 }
 

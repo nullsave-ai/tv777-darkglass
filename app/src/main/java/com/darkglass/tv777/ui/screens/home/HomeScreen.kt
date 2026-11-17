@@ -31,10 +31,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.darkglass.tv777.data.model.Channel
 import com.darkglass.tv777.data.model.ChannelCategory
-import com.darkglass.tv777.ui.components.DarkGlassAmbientCanvas
 import com.darkglass.tv777.ui.components.GlassHeader
 import com.darkglass.tv777.ui.components.HeroFeaturedCard
 import com.darkglass.tv777.ui.components.StandardChannelCard
+import com.darkglass.tv777.ui.theme.BackgroundSurface
+import com.darkglass.tv777.ui.theme.BackgroundElevated
 import com.darkglass.tv777.ui.theme.BackgroundDeep
 import com.darkglass.tv777.ui.theme.LocalGlassAccent
 import com.darkglass.tv777.ui.theme.TextMuted
@@ -48,7 +49,6 @@ fun HomeScreen(viewModel: HomeViewModel, onChannelClick: (Channel) -> Unit, modi
     val state by viewModel.uiState.collectAsState()
     val accent = LocalGlassAccent.current
     Box(modifier.fillMaxSize().background(BackgroundDeep)) {
-        DarkGlassAmbientCanvas(Modifier.fillMaxSize(), accent.primaryColor, accent.secondaryColor)
         LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 110.dp)) {
             item { GlassHeader("777 STREAMING") }
             item { CategoryPillsRow(state.selectedCategory, { viewModel.selectCategory(it) }, Modifier.padding(vertical = 12.dp)) }
@@ -84,7 +84,7 @@ fun HomeScreen(viewModel: HomeViewModel, onChannelClick: (Channel) -> Unit, modi
             }
             item {
                 Box(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp)
-                    .darkGlass(RoundedCornerShape(20.dp), Color(0x600F1726), accent.primaryColor).padding(16.dp)) {
+                    .darkGlass(RoundedCornerShape(20.dp), BackgroundSurface, accent.primaryColor).padding(16.dp)) {
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                         Column {
                             Text("شبكة 777 البثوث المباشرة", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = TextWhite)
@@ -116,7 +116,7 @@ private fun CategoryPillsRow(selected: ChannelCategory, onSelect: (ChannelCatego
         items(ChannelCategory.entries, key = { it.id }) { cat ->
             val active = cat == selected
             Box(Modifier.clip(RoundedCornerShape(16.dp))
-                .background(if (active) accent.primaryColor.copy(alpha = 0.35f) else Color(0x35121927))
+                .background(if (active) accent.primaryColor.copy(alpha = 0.35f) else BackgroundElevated)
                 .border(1.dp, if (active) accent.primaryColor.copy(alpha = 0.8f) else Color.White.copy(alpha = 0.12f), RoundedCornerShape(16.dp))
                 .clickable { onSelect(cat) }.padding(horizontal = 14.dp, vertical = 8.dp), Alignment.Center) {
                 Text(cat.arabicName, fontSize = 12.sp, fontWeight = if (active) FontWeight.Bold else FontWeight.Normal, color = if (active) TextWhite else TextMuted)

@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 data class SettingsUiState(
-    val accent: GlassAccent = GlassAccent.NEON_BLUE,
+    val accent: GlassAccent = GlassAccent.SLATE,
     val playerConfig: PlayerConfig = PlayerConfig(),
     val customM3uUrl: String = "",
     val isSavingSources: Boolean = false,
