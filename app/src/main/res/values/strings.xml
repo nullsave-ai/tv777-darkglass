@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">777</string>
+    <string name="app_subtitle">Dark Glass Streaming</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_channels">القنوات</string>
+    <string name="nav_settings">الإعدادات</string>
+
+    <!-- Home Sections -->
+    <string name="section_featured">القنوات المميزة</string>
+    <string name="section_favorites">القنوات المفضلة</string>
+    <string name="section_recent">آخر القنوات مشاهدة</string>
+    <string name="badge_live">مباشر</string>
+    <string name="badge_hd">FHD</string>
+    <string name="badge_4k">4K</string>
+
+    <!-- Channels Screen -->
+    <string name="search_hint">ابحث عن اسم القناة أو التصنيف…</string>
+    <string name="category_all">الكل</string>
+    <string name="category_sports">رياضة</string>
+    <string name="category_news">أخبار</string>
+    <string name="category_doc">وثائقيات</string>
+    <string name="category_kids">أطفال</string>
+    <string name="category_islamic">إسلامية</string>
+    <string name="category_general">ترفيه عام</string>
+    <string name="channels_count">%1$d قناة متوفرة</string>
+    <string name="refresh_sources">تحديث المصادر</string>
+    <string name="no_channels_found">لم يتم العثور على أي قناة مطابقة</string>
+
+    <!-- Video Player -->
+    <string name="player_connecting">جاري الاتصال بالبث المباشر…</string>
+    <string name="player_error">تعذر تشغيل البث المباشر</string>
+    <string name="player_retry">إعادة المحاولة</string>
+    <string name="player_aspect_ratio">تناسب الشاشة</string>
+    <string name="player_volume">الصوت</string>
+    <string name="player_quick_list">قائمة القنوات السريعة</string>
+
+    <!-- Settings -->
+    <string name="settings_visual_theme">المظهر والإضاءة الزجاجية</string>
+    <string name="settings_accent_color">نغمة الإضاءة الزجاجية (Accent)</string>
+    <string name="settings_accent_blue">أزرق سماوي نيون</string>
+    <string name="settings_accent_purple">بنفسجي فوتوغرافي</string>
+    <string name="settings_accent_cyan">إنديغو كريستال</string>
+    <string name="settings_player_title">إعدادات مشغل البث</string>
+    <string name="settings_buffer_mode">وضع التخزين المؤقت (Buffer)</string>
+    <string name="settings_buffer_low">بث فائق السرعة (Low Latency)</string>
+    <string name="settings_buffer_normal">متوازن (Balanced)</string>
+    <string name="settings_buffer_high">أقصى استقرار (Stable)</string>
+    <string name="settings_hw_accel">تسريع العتاد المادي (Hardware Accel)</string>
+    <string name="settings_sources_title">إدارة مصادر القنوات</string>
+    <string name="settings_m3u_url">رابط قائمة البث (M3U / Stream Source)</string>
+    <string name="settings_save_and_reload">حفظ وتحديث القائمة</string>
+    <string name="settings_about_title">عن تطبيق 777</string>
+    <string name="settings_version">الإصدار 1.0.0 — Dark Glass Architecture</string>
+    <string name="settings_tech_stack">Jetpack Compose • Media3 • Custom Canvas</string>
+</resources>
