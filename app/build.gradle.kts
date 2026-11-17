@@ -4,6 +4,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        create("release") {
+            storeFile = file(System.getenv("KEYSTORE_FILE") ?: "release.jks")
+            storePassword = System.getenv("KS_PASSWORD") ?: ""
+            keyAlias = System.getenv("KS_ALIAS") ?: ""
+            keyPassword = System.getenv("KS_KEY_PASSWORD") ?: ""
+        }
+    }
     namespace = "com.darkglass.tv777"
     compileSdk = 34
 
@@ -30,7 +38,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
         }
         debug {
             isMinifyEnabled = false

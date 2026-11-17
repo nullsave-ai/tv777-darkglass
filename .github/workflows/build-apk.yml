@@ -15,7 +15,16 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: gradle/actions/setup-gradle@v3
+      - name: Decode release keystore
+        env:
+          KS_B64: ${{ secrets.KS_B64 }}
+        run: echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
       - name: Build release APK
+        env:
+          KEYSTORE_FILE: ${{ runner.temp }}/release.jks
+          KS_PASSWORD: ${{ secrets.KS_PASSWORD }}
+          KS_ALIAS: ${{ secrets.KS_ALIAS }}
+          KS_KEY_PASSWORD: ${{ secrets.KS_KEY_PASSWORD }}
         run: chmod +x ./gradlew && ./gradlew assembleRelease --stacktrace
       - uses: actions/upload-artifact@v4
         with:
