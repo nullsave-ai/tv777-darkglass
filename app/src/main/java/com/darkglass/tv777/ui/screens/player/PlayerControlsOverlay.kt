@@ -17,8 +17,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -32,7 +34,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -43,16 +44,16 @@ import com.darkglass.tv777.ui.components.AppIcon
 import com.darkglass.tv777.ui.components.CompactChannelCard
 import com.darkglass.tv777.ui.components.Ic
 import com.darkglass.tv777.ui.components.LiveAudioWave
+import com.darkglass.tv777.ui.theme.AccentGold
 import com.darkglass.tv777.ui.theme.AccentLiveRed
 import com.darkglass.tv777.ui.theme.BackgroundElevated
-import com.darkglass.tv777.ui.theme.GlassStrokeDefault
 import com.darkglass.tv777.ui.theme.BackgroundSurface
+import com.darkglass.tv777.ui.theme.GlassStrokeDefault
 import com.darkglass.tv777.ui.theme.LocalGlassAccent
 import com.darkglass.tv777.ui.theme.TextMuted
 import com.darkglass.tv777.ui.theme.TextWhite
 import com.darkglass.tv777.ui.theme.darkGlass
 import com.darkglass.tv777.ui.theme.primaryColor
-import com.darkglass.tv777.ui.theme.secondaryColor
 
 @Composable
 fun PlayerControlsOverlay(
@@ -63,6 +64,8 @@ fun PlayerControlsOverlay(
     onPrevChannel: () -> Unit,
     onSelectChannel: (Channel) -> Unit,
     onCycleAspectRatio: () -> Unit,
+    onCycleSpeed: () -> Unit,
+    onToggleFavorite: () -> Unit,
     onToggleQuickChannels: () -> Unit,
     onVolumeChange: (Float) -> Unit,
     onToggleMute: () -> Unit,
@@ -90,8 +93,7 @@ fun PlayerControlsOverlay(
                     Spacer(Modifier.height(6.dp))
                     Text(state.errorMessage, fontSize = 12.sp, color = TextMuted, textAlign = TextAlign.Center)
                     Spacer(Modifier.height(16.dp))
-                    Box(Modifier.clip(RoundedCornerShape(14.dp))
-                        .background(accent.primaryColor)
+                    Box(Modifier.clip(RoundedCornerShape(14.dp)).background(accent.primaryColor)
                         .clickable { onRetry() }.padding(horizontal = 24.dp, vertical = 10.dp)) {
                         Text("إعادة المحاولة", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = TextWhite)
                     }
@@ -100,84 +102,109 @@ fun PlayerControlsOverlay(
         }
         AnimatedVisibility(state.areControlsVisible, enter = fadeIn(), exit = fadeOut()) {
             Box(Modifier.fillMaxSize()) {
-                Box(Modifier.fillMaxWidth().align(Alignment.TopCenter)
-                    .background(BackgroundSurface)
-                    .padding(horizontal = 20.dp, vertical = 18.dp)) {
+                Column(Modifier.fillMaxWidth().align(Alignment.TopCenter).statusBarsPadding().background(BackgroundSurface).padding(horizontal = 16.dp, vertical = 12.dp)) {
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                        Box(Modifier.size(42.dp).darkGlass(CircleShape, BackgroundElevated).clickable { onBackClick() }, Alignment.Center) {
-                            AppIcon(Ic.CLOSE, Modifier.size(20.dp), TextWhite)
+                        Box(Modifier.size(40.dp).darkGlass(CircleShape, BackgroundElevated).clickable { onBackClick() }, Alignment.Center) {
+                            AppIcon(Ic.CLOSE, Modifier.size(18.dp), TextWhite)
                         }
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.weight(1f)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 LiveAudioWave(barCount = 3, color = AccentLiveRed, isPlaying = state.isPlaying)
                                 Spacer(Modifier.width(6.dp))
-                                Text(channel?.arabicName ?: "777 Live", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = TextWhite)
+                                Text(channel?.arabicName ?: "777 Live", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = TextWhite, maxLines = 1)
                             }
-                            Text("${channel?.category?.arabicName ?: "قناة"} • ${channel?.bitrate ?: "1080p"}", fontSize = 11.sp, color = TextMuted)
+                            Text("${channel?.category?.arabicName ?: "قناة"} • ${channel?.bitrate ?: "FHD"}", fontSize = 10.sp, color = TextMuted)
                         }
-                        Box(Modifier.clip(RoundedCornerShape(12.dp)).background(BackgroundElevated)
-                            .border(1.dp, Color.White.copy(alpha = 0.2f), RoundedCornerShape(12.dp))
-                            .clickable { onCycleAspectRatio() }.padding(horizontal = 10.dp, vertical = 6.dp), Alignment.Center) {
-                            Text(state.aspectRatio.name, fontSize = 11.sp, fontWeight = FontWeight.Bold, color = accent.primaryColor)
+                        Box(Modifier.size(40.dp).darkGlass(CircleShape, BackgroundElevated).clickable { onCycleAspectRatio() }, Alignment.Center) {
+                            Text(state.aspectRatio.name.first().toString(), fontSize = 13.sp, fontWeight = FontWeight.Black, color = accent.primaryColor)
                         }
                     }
                 }
-                Column(Modifier.fillMaxWidth().align(Alignment.BottomCenter)
-                    .background(BackgroundSurface)
-                    .padding(horizontal = 20.dp, vertical = 20.dp)) {
+                Column(Modifier.fillMaxWidth().align(Alignment.BottomCenter).padding(horizontal = 14.dp)) {
                     AnimatedVisibility(state.isQuickChannelsOpen,
                         enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
                         exit = slideOutVertically(targetOffsetY = { it }) + fadeOut()) {
-                        Column(Modifier.padding(bottom = 14.dp)) {
+                        Column(Modifier.padding(bottom = 10.dp).darkGlass(RoundedCornerShape(20.dp), BackgroundSurface).padding(12.dp)) {
                             Text("قائمة القنوات السريعة", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = TextWhite, modifier = Modifier.padding(bottom = 8.dp))
-                            LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(horizontal = 4.dp)) {
+                            LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(horizontal = 2.dp)) {
                                 items(state.allChannels, key = { it.id }) { c ->
                                     CompactChannelCard(c, c.id == channel?.id, { onSelectChannel(c) })
                                 }
                             }
                         }
                     }
-                    Box(Modifier.fillMaxWidth().darkGlass(RoundedCornerShape(26.dp), BackgroundSurface, accent.primaryColor, elevation = 16.dp)
-                        .padding(horizontal = 16.dp, vertical = 12.dp)) {
+                    Column(Modifier.fillMaxWidth().darkGlass(RoundedCornerShape(24.dp), BackgroundSurface).padding(horizontal = 14.dp, vertical = 10.dp)) {
+                        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp), contentPadding = PaddingValues(bottom = 10.dp)) {
+                            item {
+                                FeatureChip(if (state.isQuickChannelsOpen) accent.primaryColor.copy(alpha = 0.3f) else BackgroundElevated,
+                                    if (state.isQuickChannelsOpen) accent.primaryColor else GlassStrokeDefault, { onToggleQuickChannels() }) {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        AppIcon(Ic.PLAYLIST, Modifier.size(15.dp), if (state.isQuickChannelsOpen) accent.primaryColor else TextWhite)
+                                        Spacer(Modifier.width(4.dp))
+                                        Text("القنوات", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = TextWhite)
+                                    }
+                                }
+                            }
+                            item {
+                                FeatureChip(BackgroundElevated, GlassStrokeDefault, { onCycleSpeed() }) {
+                                    Text("${state.playbackSpeed}x", fontSize = 12.sp, fontWeight = FontWeight.Black, color = accent.primaryColor)
+                                    Spacer(Modifier.width(4.dp))
+                                    Text("السرعة", fontSize = 12.sp, color = TextMuted)
+                                }
+                            }
+                            item {
+                                FeatureChip(BackgroundElevated, GlassStrokeDefault, { onCycleAspectRatio() }) {
+                                    Text(state.aspectRatio.name, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = TextWhite)
+                                }
+                            }
+                            item {
+                                FeatureChip(if (state.isFavorite) AccentGold.copy(alpha = 0.2f) else BackgroundElevated,
+                                    if (state.isFavorite) AccentGold else GlassStrokeDefault, { onToggleFavorite() }) {
+                                    AppIcon(if (state.isFavorite) Ic.STAR else Ic.STAR_BORDER, Modifier.size(16.dp),
+                                        if (state.isFavorite) AccentGold else TextMuted, 1.8.dp)
+                                    Spacer(Modifier.width(4.dp))
+                                    Text("المفضلة", fontSize = 12.sp, color = if (state.isFavorite) AccentGold else TextMuted)
+                                }
+                            }
+                        }
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.width(110.dp)) {
-                                Box(Modifier.size(24.dp).clickable { onToggleMute() }, Alignment.Center) {
+                            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
+                                Box(Modifier.size(28.dp).clickable { onToggleMute() }, Alignment.Center) {
                                     AppIcon(if (state.isMuted) Ic.MUTE else Ic.VOLUME, Modifier.size(20.dp), TextWhite)
                                 }
-                                Spacer(Modifier.width(6.dp))
                                 Slider(if (state.isMuted) 0f else state.volume, { onVolumeChange(it) },
                                     colors = SliderDefaults.colors(thumbColor = accent.primaryColor,
-                                        activeTrackColor = accent.primaryColor, inactiveTrackColor = GlassStrokeDefault),
+                                        activeTrackColor = accent.primaryColor, inactiveTrackColor = BackgroundElevated),
                                     modifier = Modifier.weight(1f))
                             }
-                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                                Box(Modifier.size(38.dp).clip(CircleShape).background(GlassStrokeDefault).clickable { onPrevChannel() }, Alignment.Center) {
-                                    AppIcon(Ic.PREV, Modifier.size(20.dp), TextWhite)
+                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                                Box(Modifier.size(38.dp).clip(CircleShape).background(BackgroundElevated)
+                                    .border(1.dp, GlassStrokeDefault, CircleShape).clickable { onPrevChannel() }, Alignment.Center) {
+                                    AppIcon(Ic.PREV, Modifier.size(18.dp), TextWhite)
                                 }
-                                Box(Modifier.size(54.dp).clip(CircleShape)
-                                    .background(accent.primaryColor)
-                                    .border(1.2.dp, Color.White.copy(alpha = 0.5f), CircleShape).clickable { onTogglePlay() }, Alignment.Center) {
-                                    AppIcon(if (state.isPlaying) Ic.PAUSE else Ic.PLAY, Modifier.size(24.dp), TextWhite)
+                                Box(Modifier.size(52.dp).clip(CircleShape).background(accent.primaryColor)
+                                    .border(1.dp, Color.White.copy(alpha = 0.3f), CircleShape).clickable { onTogglePlay() }, Alignment.Center) {
+                                    AppIcon(if (state.isPlaying) Ic.PAUSE else Ic.PLAY, Modifier.size(22.dp), BackgroundSurface)
                                 }
-                                Box(Modifier.size(38.dp).clip(CircleShape).background(GlassStrokeDefault).clickable { onNextChannel() }, Alignment.Center) {
-                                    AppIcon(Ic.NEXT, Modifier.size(20.dp), TextWhite)
-                                }
-                            }
-                            Box(Modifier.clip(RoundedCornerShape(12.dp))
-                                .background(if (state.isQuickChannelsOpen) accent.primaryColor.copy(alpha = 0.35f) else GlassStrokeDefault)
-                                .border(0.8.dp, if (state.isQuickChannelsOpen) accent.primaryColor else Color.White.copy(alpha = 0.2f), RoundedCornerShape(12.dp))
-                                .clickable { onToggleQuickChannels() }.padding(horizontal = 10.dp, vertical = 8.dp),
-                                Alignment.Center) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    AppIcon(Ic.PLAYLIST, Modifier.size(16.dp), TextWhite)
-                                    Spacer(Modifier.width(4.dp))
-                                    Text("القنوات", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = TextWhite)
+                                Box(Modifier.size(38.dp).clip(CircleShape).background(BackgroundElevated)
+                                    .border(1.dp, GlassStrokeDefault, CircleShape).clickable { onNextChannel() }, Alignment.Center) {
+                                    AppIcon(Ic.NEXT, Modifier.size(18.dp), TextWhite)
                                 }
                             }
                         }
                     }
+                    Spacer(Modifier.navigationBarsPadding().height(12.dp))
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun FeatureChip(background: Color, border: Color, onClick: () -> Unit, content: @Composable () -> Unit) {
+    Box(Modifier.clip(RoundedCornerShape(14.dp)).background(background)
+        .border(1.dp, border, RoundedCornerShape(14.dp))
+        .clickable { onClick() }.padding(horizontal = 12.dp, vertical = 8.dp), Alignment.Center) {
+        content()
     }
 }

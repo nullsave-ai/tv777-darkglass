@@ -36,7 +36,7 @@ import com.darkglass.tv777.ui.components.HeroFeaturedCard
 import com.darkglass.tv777.ui.components.StandardChannelCard
 import com.darkglass.tv777.ui.theme.BackgroundSurface
 import com.darkglass.tv777.ui.theme.BackgroundElevated
-import com.darkglass.tv777.ui.theme.BackgroundDeep
+import com.darkglass.tv777.ui.theme.LocalAppBackground
 import com.darkglass.tv777.ui.theme.LocalGlassAccent
 import com.darkglass.tv777.ui.theme.TextMuted
 import com.darkglass.tv777.ui.theme.TextWhite
@@ -48,7 +48,7 @@ import com.darkglass.tv777.ui.theme.secondaryColor
 fun HomeScreen(viewModel: HomeViewModel, onChannelClick: (Channel) -> Unit, modifier: Modifier = Modifier) {
     val state by viewModel.uiState.collectAsState()
     val accent = LocalGlassAccent.current
-    Box(modifier.fillMaxSize().background(BackgroundDeep)) {
+    Box(modifier.fillMaxSize().background(LocalAppBackground.current)) {
         LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 110.dp)) {
             item { GlassHeader("777 STREAMING") }
             item { CategoryPillsRow(state.selectedCategory, { viewModel.selectCategory(it) }, Modifier.padding(vertical = 12.dp)) }

@@ -60,6 +60,7 @@ fun PlayerScreen(channel: Channel, viewModel: PlayerViewModel, onBackClick: () -
         PlayerControlsOverlay(state, onBackClick, { viewModel.togglePlayPause() },
             { viewModel.playNextChannel() }, { viewModel.playPreviousChannel() },
             { viewModel.playChannel(it) }, { viewModel.cycleAspectRatio() },
+            { viewModel.cycleSpeed() }, { viewModel.toggleFavorite() },
             { viewModel.toggleQuickChannels() }, { viewModel.setVolume(it) },
             { viewModel.toggleMute() }, { viewModel.retryPlayback() })
     }

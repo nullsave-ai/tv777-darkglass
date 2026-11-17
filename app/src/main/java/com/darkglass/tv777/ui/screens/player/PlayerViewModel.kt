@@ -31,6 +31,8 @@ data class PlayerUiState(
     val volume: Float = 1f,
     val isMuted: Boolean = false,
     val aspectRatio: AspectRatioMode = AspectRatioMode.FIT,
+    val playbackSpeed: Float = 1f,
+    val isFavorite: Boolean = false,
     val areControlsVisible: Boolean = true,
     val isQuickChannelsOpen: Boolean = false,
     val allChannels: List<Channel> = emptyList()
@@ -80,7 +82,9 @@ class PlayerViewModel(private val context: Context, private val repo: ChannelRep
         _ui.value = _ui.value.copy(currentChannel = channel, isLoading = true, errorMessage = null)
         viewModelScope.launch {
             repo.markWatched(channel.id)
-            val factory = DefaultHttpDataSource.Factory().setUserAgent("777-DarkGlass-ExoPlayer/1.0")
+            val fav = settings.favoritesFlow.first().contains(channel.id)
+            _ui.value = _ui.value.copy(isFavorite = fav)
+            val factory = DefaultHttpDataSource.Factory().setUserAgent("777-Live-ExoPlayer/1.0")
                 .setConnectTimeoutMs(8000).setReadTimeoutMs(8000).setAllowCrossProtocolRedirects(true)
             val source = HlsMediaSource.Factory(factory).createMediaSource(MediaItem.fromUri(channel.streamUrl))
             player?.apply {
@@ -116,6 +120,24 @@ class PlayerViewModel(private val context: Context, private val repo: ChannelRep
     fun cycleAspectRatio() {
         val values = AspectRatioMode.entries
         _ui.value = _ui.value.copy(aspectRatio = values[(_ui.value.aspectRatio.ordinal + 1) % values.size])
+        scheduleHideControls()
+    }
+
+    fun cycleSpeed() {
+        val speeds = listOf(0.5f, 0.75f, 1f, 1.25f, 1.5f, 2f)
+        val idx = speeds.indexOfFirst { it >= _ui.value.playbackSpeed - 0.01f }.coerceAtLeast(0)
+        val next = speeds[(idx + 1) % speeds.size]
+        player?.let { it.playbackParameters = it.playbackParameters.withPlaybackSpeed(next) }
+        _ui.value = _ui.value.copy(playbackSpeed = next)
+        scheduleHideControls()
+    }
+
+    fun toggleFavorite() {
+        val channel = _ui.value.currentChannel ?: return
+        viewModelScope.launch {
+            settings.toggleFavorite(channel.id)
+            _ui.value = _ui.value.copy(isFavorite = settings.favoritesFlow.first().contains(channel.id))
+        }
         scheduleHideControls()
     }
 

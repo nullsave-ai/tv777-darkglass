@@ -48,7 +48,7 @@ import com.darkglass.tv777.ui.components.StandardChannelCard
 import com.darkglass.tv777.ui.theme.AccentGold
 import com.darkglass.tv777.ui.theme.BackgroundSurface
 import com.darkglass.tv777.ui.theme.BackgroundElevated
-import com.darkglass.tv777.ui.theme.BackgroundDeep
+import com.darkglass.tv777.ui.theme.LocalAppBackground
 import com.darkglass.tv777.ui.theme.LocalGlassAccent
 import com.darkglass.tv777.ui.theme.TextMuted
 import com.darkglass.tv777.ui.theme.TextWhite
@@ -60,7 +60,7 @@ import com.darkglass.tv777.ui.theme.secondaryColor
 fun ChannelsScreen(viewModel: ChannelsViewModel, onChannelClick: (Channel) -> Unit, modifier: Modifier = Modifier) {
     val state by viewModel.uiState.collectAsState()
     val accent = LocalGlassAccent.current
-    Box(modifier.fillMaxSize().background(BackgroundDeep)) {
+    Box(modifier.fillMaxSize().background(LocalAppBackground.current)) {
         Column(Modifier.fillMaxSize().padding(bottom = 90.dp)) {
             GlassHeader("دليل القنوات المباشرة", { viewModel.refreshChannels() }, Ic.REFRESH)
             AnimatedVisibility(state.statusMessage != null, enter = fadeIn(), exit = fadeOut()) {
