@@ -31,8 +31,8 @@ class ChannelsViewModel(private val repo: ChannelRepository) : ViewModel() {
     private val refreshing = MutableStateFlow(false)
     private val status = MutableStateFlow<String?>(null)
 
-    val uiState: StateFlow<ChannelsUiState> = combine(
-        arrayOf(repo.allChannelsFlow, query, category, grid, favOnly, refreshing, status)
+    val uiState: StateFlow<ChannelsUiState> = combine<Any?, ChannelsUiState>(
+        repo.allChannelsFlow, query, category, grid, favOnly, refreshing, status
     ) { a ->
         val all = a[0] as List<Channel>
         val q = a[1] as String
