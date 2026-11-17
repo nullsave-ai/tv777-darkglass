@@ -43,6 +43,7 @@ import com.darkglass.tv777.ui.theme.IconStyle
 import com.darkglass.tv777.ui.theme.PageTransition
 import com.darkglass.tv777.ui.theme.Tv777Theme
 import com.darkglass.tv777.ui.theme.VisualStyle
+import com.darkglass.tv777.ui.theme.primaryColor
 
 @Composable
 fun MainScreen(settings: SettingsManager, repo: ChannelRepository) {

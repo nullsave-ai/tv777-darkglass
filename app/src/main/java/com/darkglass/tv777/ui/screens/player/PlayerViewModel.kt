@@ -127,7 +127,7 @@ class PlayerViewModel(private val context: Context, private val repo: ChannelRep
         val speeds = listOf(0.5f, 0.75f, 1f, 1.25f, 1.5f, 2f)
         val idx = speeds.indexOfFirst { it >= _ui.value.playbackSpeed - 0.01f }.coerceAtLeast(0)
         val next = speeds[(idx + 1) % speeds.size]
-        player?.let { it.playbackParameters = it.playbackParameters.withPlaybackSpeed(next) }
+        player?.setPlaybackSpeed(next)
         _ui.value = _ui.value.copy(playbackSpeed = next)
         scheduleHideControls()
     }

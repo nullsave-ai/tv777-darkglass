@@ -87,12 +87,14 @@ fun SettingsScreen(viewModel: SettingsViewModel, modifier: Modifier = Modifier) 
         LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 120.dp)) {
             item { GlassHeader("الإعدادات") }
             item { TabBar(tab) { tab = it } }
-            when (tab) {
-                SettingsTab.COLORS -> colorsTab(state, viewModel)
-                SettingsTab.STYLE -> styleTab(state, viewModel, showAllStyles) { showAllStyles = it }
-                SettingsTab.BACKGROUND -> backgroundTab(state, viewModel)
-                SettingsTab.MOTION -> motionTab(state, viewModel)
-                SettingsTab.MEDIA -> mediaTab(state, viewModel, m3u) { m3u = it }
+            item {
+                when (tab) {
+                    SettingsTab.COLORS -> ColorsTab(state, viewModel)
+                    SettingsTab.STYLE -> StyleTab(state, viewModel, showAllStyles) { showAllStyles = it }
+                    SettingsTab.BACKGROUND -> BackgroundTab(state, viewModel)
+                    SettingsTab.MOTION -> MotionTab(state, viewModel)
+                    SettingsTab.MEDIA -> MediaTab(state, viewModel, m3u) { m3u = it }
+                }
             }
         }
     }
@@ -117,9 +119,9 @@ private fun TabBar(current: SettingsTab, onSelect: (SettingsTab) -> Unit) {
 }
 
 @Composable
-private fun colorsTab(state: SettingsUiState, viewModel: SettingsViewModel) {
-    item { SectionHeader("لون التمييز") }
-    item {
+private fun ColorsTab(state: SettingsUiState, viewModel: SettingsViewModel) {
+    Column(Modifier.fillMaxWidth()) {
+        SectionHeader("لون التمييز")
         Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 4.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             GlassAccent.entries.forEach { option ->
                 val active = option == state.accent
@@ -145,21 +147,19 @@ private fun colorsTab(state: SettingsUiState, viewModel: SettingsViewModel) {
 }
 
 @Composable
-private fun styleTab(state: SettingsUiState, viewModel: SettingsViewModel, showAll: Boolean, onToggleAll: (Boolean) -> Unit) {
+private fun StyleTab(state: SettingsUiState, viewModel: SettingsViewModel, showAll: Boolean, onToggleAll: (Boolean) -> Unit) {
     val accent = LocalGlassAccent.current
-    item { SectionHeader("نمط الواجهة") }
-    item {
+    Column(Modifier.fillMaxWidth()) {
+        SectionHeader("نمط الواجهة")
         val styles = if (showAll) VisualStyle.entries else VisualStyle.entries.take(6)
         LazyVerticalGrid(columns = GridCells.Fixed(3),
             modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp).height(if (showAll) 560.dp else 380.dp),
             horizontalArrangement = Arrangement.spacedBy(14.dp), verticalArrangement = Arrangement.spacedBy(14.dp),
             userScrollEnabled = false) {
             items(styles) { style ->
-                StylePreviewCard(style, style == state.visualStyle, accent.primaryColor) { viewModel.setVisualStyle(style) }
+                StylePreviewCard(style, style == state.visualStyle, accent.primaryColor, { viewModel.setVisualStyle(style) })
             }
         }
-    }
-    item {
         Box(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 12.dp)
             .clip(RoundedCornerShape(14.dp)).background(BackgroundElevated)
             .border(1.dp, GlassStrokeDefault, RoundedCornerShape(14.dp))
@@ -171,10 +171,10 @@ private fun styleTab(state: SettingsUiState, viewModel: SettingsViewModel, showA
 }
 
 @Composable
-private fun backgroundTab(state: SettingsUiState, viewModel: SettingsViewModel) {
+private fun BackgroundTab(state: SettingsUiState, viewModel: SettingsViewModel) {
     val accent = LocalGlassAccent.current
-    item { SectionHeader("لون الخلفية والنقشة") }
-    item {
+    Column(Modifier.fillMaxWidth()) {
+        SectionHeader("لون الخلفية والنقشة")
         Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             AppBackground.entries.forEach { bg ->
                 val active = bg == state.background
@@ -192,8 +192,6 @@ private fun backgroundTab(state: SettingsUiState, viewModel: SettingsViewModel) 
                 }
             }
         }
-    }
-    item {
         Box(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 14.dp)
             .darkGlass(RoundedCornerShape(16.dp), BackgroundSurface).padding(14.dp)) {
             Text("النقشة الخلفية تتبع النمط المختار وتظهر خلف جميع الصفحات بلون التمييز شبه الشفاف.",
@@ -203,9 +201,9 @@ private fun backgroundTab(state: SettingsUiState, viewModel: SettingsViewModel) 
 }
 
 @Composable
-private fun motionTab(state: SettingsUiState, viewModel: SettingsViewModel) {
-    item { SectionHeader("انتقال الصفحات") }
-    item {
+private fun MotionTab(state: SettingsUiState, viewModel: SettingsViewModel) {
+    Column(Modifier.fillMaxWidth()) {
+        SectionHeader("انتقال الصفحات")
         Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp).darkGlass(RoundedCornerShape(18.dp), BackgroundSurface).padding(10.dp)) {
             PageTransition.entries.forEach { t ->
                 val active = t == state.pageTransition
@@ -219,9 +217,7 @@ private fun motionTab(state: SettingsUiState, viewModel: SettingsViewModel) {
                 }
             }
         }
-    }
-    item { SectionHeader("نمط الأيقونات") }
-    item {
+        SectionHeader("نمط الأيقونات")
         Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             IconStyle.entries.forEach { s ->
                 val active = s == state.iconStyle
@@ -255,10 +251,10 @@ private fun IconPreview(s: IconStyle) {
 }
 
 @Composable
-private fun mediaTab(state: SettingsUiState, viewModel: SettingsViewModel, m3u: String, onM3uChange: (String) -> Unit) {
+private fun MediaTab(state: SettingsUiState, viewModel: SettingsViewModel, m3u: String, onM3uChange: (String) -> Unit) {
     val accent = LocalGlassAccent.current
-    item { SectionHeader("المشغل (Media3)") }
-    item {
+    Column(Modifier.fillMaxWidth()) {
+        SectionHeader("المشغل (Media3)")
         Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 4.dp)
             .darkGlass(RoundedCornerShape(20.dp), BackgroundSurface).padding(16.dp)) {
             Text("وضع التخزين المؤقت", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = TextWhite)
@@ -299,9 +295,7 @@ private fun mediaTab(state: SettingsUiState, viewModel: SettingsViewModel, m3u: 
                     uncheckedTrackColor = BackgroundElevated))
             }
         }
-    }
-    item { SectionHeader("مصادر القنوات") }
-    item {
+        SectionHeader("مصادر القنوات")
         Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 4.dp)
             .darkGlass(RoundedCornerShape(20.dp), BackgroundSurface).padding(16.dp)) {
             Text("رابط قائمة البث المخصص (M3U)", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = TextWhite)
